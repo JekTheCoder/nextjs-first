@@ -1,3 +1,5 @@
+@import '../../../styles/components/subtitle.scss';
+
 .header {
 	display: flex;
 	justify-content: space-between;
@@ -15,4 +17,8 @@
 	list-style: none;
 	display: flex;
 	column-gap: 1rem;
+}
+
+.subtitle {
+	@include subtitle();
 }
