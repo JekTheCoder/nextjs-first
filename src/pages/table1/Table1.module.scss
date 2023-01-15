@@ -1,0 +1,11 @@
+@mixin card {
+	border-radius: var(--border-radius);
+	background-color: rgb(var(--card-rgb));
+	box-shadow: 0px 0px 10px -5px rgba(var(--card-border-rgb), 0.63);
+}
+
+.card {
+	@include card();
+	padding: 1rem;
+	height: 100%;
+}

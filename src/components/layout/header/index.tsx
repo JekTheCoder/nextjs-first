@@ -20,6 +20,9 @@ export default function Header() {
               About
             </Link>
           </li>
+					<li>
+						<Link className='link' href={'table1'}>Tabla 1</Link>
+					</li>
         </ul>
       </nav>
     </header>

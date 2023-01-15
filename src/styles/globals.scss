@@ -44,8 +44,8 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-start-rgb: 23, 30, 50;
+    --background-end-rgb: 23, 26, 33;
 		--text-secondary-rgb: 200, 200, 200;
 
     --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
@@ -68,10 +68,10 @@
       #ffffff80
     );
 
-    --callout-rgb: 20, 20, 20;
+    --callout-rgb: 30, 30, 35;
     --callout-border-rgb: 108, 108, 108;
-    --card-rgb: 100, 100, 100;
-    --card-border-rgb: 200, 200, 200;
+    --card-rgb: 50, 50, 50;
+    --card-border-rgb: 100, 100, 100;
   }
 }
 
