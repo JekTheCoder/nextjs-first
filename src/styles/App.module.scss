@@ -1,0 +1,12 @@
+@import './components//layout.scss';
+
+.container {
+	width: 100%;
+	max-width: 1000px;
+	margin: auto;
+	padding: 1rem;
+}
+
+.app {
+	@include page-layout();
+}

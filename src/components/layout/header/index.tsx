@@ -8,7 +8,7 @@ export default function Header() {
       <nav className={styles.nav}>
         <ul>
           <li>
-            <Link className='aaa' href="about">About</Link>
+            <Link className='link' href="about">About</Link>
           </li>
         </ul>
       </nav>

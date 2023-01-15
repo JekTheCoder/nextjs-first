@@ -1,0 +1,14 @@
+@mixin page-layout {
+	min-height: 100vh;
+	@include layout();
+}
+
+@mixin layout() {
+	display: grid;
+	min-height: 100vh;
+	grid-template-rows: auto 1fr auto;
+
+	&>* + * {
+		height: 100%;
+	}
+}
