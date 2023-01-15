@@ -1,3 +1,4 @@
+import { PageEvent } from '@/components/paginator'
 import Table, { Row } from '@/components/table'
 import { getPokemonByUrl, pokeQuery } from '@/http/pokequery'
 import { Pokemon } from '@/models/pokemon'
@@ -23,8 +24,8 @@ export default function Table1() {
   )
 }
 
-async function source(): Promise<Data[]> {
-  const result = await pokeQuery()
+async function source({ page, pageSize }: PageEvent): Promise<Data[]> {
+  const result = await pokeQuery(page * pageSize, pageSize)
   const pokemons = await Promise.all(
     result.results.map(r => getPokemonByUrl(r.url))
   )
