@@ -1,14 +1,26 @@
 import { PageEvent } from '@/components/paginator'
 import Table, { Row, XPagination } from '@/components/table'
-import { getPokemonByUrl, pokeQuery } from '@/http/pokequery'
+import { useDebounce } from '@/hooks/use-debounce'
+import { getPokemonByUrl, pokeQuery, pokeQueryFilter } from '@/http/pokequery'
 import { Pokemon } from '@/models/pokemon'
+import { useEffect } from 'react'
+import { useMemo, useState } from 'react'
 import styles from './Table1.module.scss'
 
 type Data = Pokemon
 
 export default function Table1() {
+	const [nameD, setNameD] = useDebounce('', 2000)
+
+  const source = useMemo(
+    () => (page: PageEvent) => getPokemon(page, nameD),
+    [nameD]
+  )
+
+
   return (
     <div className={styles.card}>
+      <input type="text" onChange={e => setNameD(e.target.value)} />
       <Table source={source} rowFactory={Row} rowKey={data => data.name}>
         <thead>
           <tr>
@@ -24,16 +36,16 @@ export default function Table1() {
   )
 }
 
-async function source({ page, pageSize }: PageEvent): Promise<XPagination<Data>> {
-  const result = await pokeQuery((page - 1) * pageSize, pageSize)
-  const pokemons = await Promise.all(
-    result.results.map(r => getPokemonByUrl(r.url))
-  )
+async function getPokemon(
+  { page, pageSize }: PageEvent,
+  name: string
+): Promise<XPagination<Data>> {
+  const pokemons = await pokeQueryFilter((page - 1) * pageSize, pageSize, name)
 
-	return {
-		length: 151,
-		rows: pokemons,
-	}
+  return {
+    length: 151,
+    rows: pokemons,
+  }
 }
 
 function Row({ data, index }: Row<Data>) {

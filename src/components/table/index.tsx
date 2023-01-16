@@ -28,8 +28,6 @@ export default function Table<T>({
   children,
   rowKey,
 }: TableProps<T>): JSX.Element {
-	
-
   const [isLoading, setLoading] = useState(true)
   const [data, setData] = useState<T[]>([])
   const [page, setPage] = useState(0)
@@ -64,8 +62,8 @@ export default function Table<T>({
               ))
             : null}
         </tbody>
-        {isLoading ? <span>Loading....</span> : null}
       </table>
+      {isLoading ? <span>Loading....</span> : null}
       <Paginator onChanges={setPageEvent} length={pageLength} />
     </>
   )
