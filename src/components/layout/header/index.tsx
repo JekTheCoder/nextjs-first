@@ -23,6 +23,9 @@ export default function Header() {
 					<li>
 						<Link className='link' href={'table1'}>Tabla 1</Link>
 					</li>
+					<li>
+						<Link className='link' href={'debounce-input'}>Debounce Input</Link>
+					</li>
         </ul>
       </nav>
     </header>
