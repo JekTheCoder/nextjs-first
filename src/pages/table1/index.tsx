@@ -10,7 +10,7 @@ import styles from './Table1.module.scss'
 type Data = Pokemon
 
 export default function Table1() {
-	const [nameD, setNameD] = useDebounce('', 2000)
+	const [nameD, setNameD] = useDebounce('', 300)
 
   const source = useMemo(
     () => (page: PageEvent) => getPokemon(page, nameD),
