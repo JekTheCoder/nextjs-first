@@ -7,7 +7,12 @@ export interface Row<T> {
   data: T
 }
 
-type Source<T> = (page: PageEvent) => Promise<T[]>
+export interface XPagination<T> {
+  length: number
+  rows: T[]
+}
+
+type Source<T> = (page: PageEvent) => Promise<XPagination<T>>
 type RowFactory<T> = (row: T, index: number) => JSX.Element
 
 interface TableProps<T> {
@@ -23,22 +28,30 @@ export default function Table<T>({
   children,
   rowKey,
 }: TableProps<T>): JSX.Element {
+	
+
   const [isLoading, setLoading] = useState(true)
-  const [data, setData] = useState([] as T[])
-  const [page, setPage] = useState<PageEvent>({
-    page: 1,
-    length: 0,
-    pageSize: 10,
-  })
+  const [data, setData] = useState<T[]>([])
+  const [page, setPage] = useState(0)
+  const [pageLength, setPageLength] = useState(0)
+  const [pageSize, setPageSize] = useState(0)
+
+  const setPageEvent = ({ page, length, pageSize }: PageEvent) => {
+    setPage(page)
+    setPageLength(length)
+    setPageSize(pageSize)
+  }
 
   useEffect(() => {
     setLoading(true)
 
-    source(page).then(data => {
-      setData(data)
+    source({ page, length: pageLength, pageSize }).then(data => {
+      const { rows, length } = data
+      setPageLength(length)
+      setData(rows)
       setLoading(false)
     })
-  }, [source, page])
+  }, [source, page, pageLength, pageSize])
 
   return (
     <>
@@ -53,7 +66,7 @@ export default function Table<T>({
         </tbody>
         {isLoading ? <span>Loading....</span> : null}
       </table>
-      <Paginator onChanges={setPage} />
+      <Paginator onChanges={setPageEvent} length={pageLength} />
     </>
   )
 }

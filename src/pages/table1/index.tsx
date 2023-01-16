@@ -1,5 +1,5 @@
 import { PageEvent } from '@/components/paginator'
-import Table, { Row } from '@/components/table'
+import Table, { Row, XPagination } from '@/components/table'
 import { getPokemonByUrl, pokeQuery } from '@/http/pokequery'
 import { Pokemon } from '@/models/pokemon'
 import styles from './Table1.module.scss'
@@ -24,21 +24,24 @@ export default function Table1() {
   )
 }
 
-async function source({ page, pageSize }: PageEvent): Promise<Data[]> {
-  const result = await pokeQuery(page * pageSize, pageSize)
+async function source({ page, pageSize }: PageEvent): Promise<XPagination<Data>> {
+  const result = await pokeQuery((page - 1) * pageSize, pageSize)
   const pokemons = await Promise.all(
     result.results.map(r => getPokemonByUrl(r.url))
   )
 
-	return pokemons
+	return {
+		length: 151,
+		rows: pokemons,
+	}
 }
 
 function Row({ data, index }: Row<Data>) {
-  const { name, height, weight } = data
+  const { name, height, weight, id } = data
 
   return (
     <tr>
-      <td>{index+1}</td>
+      <td>{id}</td>
       <td>{name}</td>
       <td>{height}</td>
       <td>{weight}</td>
