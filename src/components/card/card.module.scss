@@ -1,0 +1,8 @@
+@import '../../styles/components/card.scss';
+
+.card {
+	@include card();
+
+	display: inline-block;	
+	padding: 1rem;
+}

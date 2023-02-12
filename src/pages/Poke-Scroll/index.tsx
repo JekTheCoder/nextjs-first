@@ -5,6 +5,7 @@ import Card from '@/components/card'
 import { usePokeScroll } from '@/hooks/use-poke-scroll'
 import useNumberInput from '@/hooks/inputs/use-number-input'
 import Image from 'next/image'
+import { Result } from '@/models/pokemon-query'
 
 export default function PokeScroll() {
   const [pokemons, next, { isFetching }, setScrollLimit] = usePokeScroll(20)
@@ -17,15 +18,11 @@ export default function PokeScroll() {
 
   return (
     <>
-      {pokemons?.map(pokemon => (
-        <Card
-          key={pokemon.name}
-          header={<PokeHeader name={pokemon.name} />}
-          content={
-            <PokeContent name={pokemon.name} id={idFromUrl(pokemon.url)} />
-          }
-        ></Card>
-      ))}
+      <div className={styles.pokeGrid}>
+        {pokemons?.map(pokemon => (
+          <PokeCard {...pokemon} key={pokemon.name} />
+        ))}
+      </div>
 
       {isFetching && <span style={{ color: 'red' }}>Loading...</span>}
       <button onClick={() => next()}>Next</button>
@@ -50,7 +47,7 @@ interface PokeContentProps {
 function PokeContent({ id, name }: PokeContentProps) {
   const src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
 
-	return <Image src={src} alt={name} width={100} height={100} />
+  return <Image src={src} alt={name} width={100} height={100} />
 }
 
 const START = 34
@@ -64,4 +61,16 @@ function idFromUrl(url: string): number {
   if (isNaN(id)) throw new Error()
 
   return id
+}
+
+function PokeCard(pokemon: Result) {
+  const id = idFromUrl(pokemon.url)
+
+  return (
+    <Card
+      key={pokemon.name}
+      header={<PokeHeader name={pokemon.name} />}
+      content={<PokeContent name={pokemon.name} id={id} />}
+    ></Card>
+  )
 }
