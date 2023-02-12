@@ -26,6 +26,9 @@ export default function Header() {
 					<li>
 						<Link className='link' href={'debounce-input'}>Debounce Input</Link>
 					</li>
+					<li>
+						<Link className='link' href={'Poke-Scroll'}>PokeScroll</Link>
+					</li>
         </ul>
       </nav>
     </header>
