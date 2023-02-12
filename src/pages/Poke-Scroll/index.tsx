@@ -1,6 +1,10 @@
-import { usePokeScroll } from '@/hooks/use-poke-scroll'
-import { FormEventHandler, useEffect, useState, ChangeEvent } from 'react'
+import { useEffect } from 'react'
 import styles from './Poke-Scroll.module.css'
+
+import Card from '@/components/card'
+import { usePokeScroll } from '@/hooks/use-poke-scroll'
+import useNumberInput from '@/hooks/inputs/use-number-input'
+import Image from 'next/image'
 
 export default function PokeScroll() {
   const [pokemons, next, { isFetching }, setScrollLimit] = usePokeScroll(20)
@@ -13,12 +17,17 @@ export default function PokeScroll() {
 
   return (
     <>
-      <div></div>
       {pokemons?.map(pokemon => (
-        <p key={pokemon.name}>{JSON.stringify(pokemon)}</p>
+        <Card
+          key={pokemon.name}
+          header={<PokeHeader name={pokemon.name} />}
+          content={
+            <PokeContent name={pokemon.name} id={idFromUrl(pokemon.url)} />
+          }
+        ></Card>
       ))}
 
-			{isFetching ? <span style={{color: 'red'}}>Loading...</span> : null}
+      {isFetching && <span style={{ color: 'red' }}>Loading...</span>}
       <button onClick={() => next()}>Next</button>
       <input type="text" {...limitInput} />
       <span>{limit}</span>
@@ -26,27 +35,33 @@ export default function PokeScroll() {
   )
 }
 
-function useNumberInput<T extends number | null>(initial: T) {
-  const [number, setNumber] = useState<number | null>(initial)
-  const [rawValue, setRawValue] = useState('')
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const el = e.target
+interface PokeHeaderProps {
+  name: string
+}
 
-    setValue(Number(el.value) || null)
-  }
+function PokeHeader({ name }: PokeHeaderProps) {
+  return <h1>{name}</h1>
+}
 
-  const setValue = (n: number | null) => {
-    setRawValue(n?.toString() || '')
-    setNumber(n)
-  }
+interface PokeContentProps {
+  id: number
+  name: string
+}
+function PokeContent({ id, name }: PokeContentProps) {
+  const src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
 
-  const onBeforeInputCapture = ((e: InputEvent) => {
-    const parsed = Number(e.data)
-    if (isNaN(parsed)) e.preventDefault()
-  }) as unknown as FormEventHandler
+	return <Image src={src} alt={name} width={100} height={100} />
+}
 
-  return [
-    { onChange, value: rawValue, onBeforeInputCapture },
-    [number, setValue],
-  ] as const
+const START = 34
+function idFromUrl(url: string): number {
+  const limiter = url.indexOf('/', START)
+  if (limiter === -1) throw new Error()
+
+  const idStr = url.slice(START, limiter)
+  const id = Number(idStr)
+
+  if (isNaN(id)) throw new Error()
+
+  return id
 }
