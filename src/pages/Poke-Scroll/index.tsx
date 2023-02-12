@@ -7,6 +7,8 @@ import useNumberInput from '@/hooks/inputs/use-number-input'
 import Image from 'next/image'
 import { Result } from '@/models/pokemon-query'
 import { useIntersection } from '@/hooks/use-intersection'
+import LoadingDot from '@/components/LoadingDots/LoadingDot'
+import LoadingDots from '@/components/LoadingDots'
 
 export default function PokeScroll() {
 	const [pokemons, next, { isFetching }, setScrollLimit] = usePokeScroll(6)
@@ -32,10 +34,11 @@ export default function PokeScroll() {
 					<PokeCard {...pokemon} key={pokemon.name} />
 				))}
 			</div>
-
-			{isFetching && <span style={{ color: 'red' }}>Loading...</span>}
+			{isFetching && <div className={styles.LoadingDotsContainer}>
+				<LoadingDots />
+			</div> } 
+			
 			<div ref={elementRef}></div>
-			<span>{limit}</span>
 		</>
 	)
 }
