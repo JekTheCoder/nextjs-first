@@ -1,0 +1,41 @@
+.Poke-Scroll {
+	
+}
+
+.pokeGrid {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 1rem;
+}
+
+.formField {
+	margin-bottom: 1rem;
+	display: inline-block;
+	padding: .5rem 1rem;
+	border-top-right-radius: var(--border-radius);
+	border-top-left-radius: var(--border-radius);
+	background-color: rgb(var(--card-rgb));
+
+	position: relative;
+
+	&>input {
+		border: none;
+		outline: none;
+		background-color: transparent;
+
+		&:focus + div {
+			background-color: currentColor;
+		}
+	}
+
+	&>div {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 1px;
+		transition: background 200ms linear;
+		background-color: transparent;
+	}
+}
+
